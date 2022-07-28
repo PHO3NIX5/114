@@ -1,44 +1,35 @@
-function preload(){
-}
+noseX=0;
+noseY=0;
 
-function setup() {
-    canvas = createCanvas(750,650);
-    canvas.position(70,200);
-    video = createCapture(VIDEO);
+function preload(){
+    img=loadImage("hat.png");
+}
+function setup(){
+    Canvas=createCanvas(700,500);
+    video=createCapture(VIDEO);
+    video.size(700,700);
     video.hide();
-    poseNet=ml5.poseNet(video,modeloaded);
-    poseNet.on("pose",goteResults)
+    Canvas.center();
+    posenet=ml5.poseNet(video,modeloaded);
+    posenet.on('pose',gotReslults);
+
 }
 function modeloaded(){
-    console.log("Modeloaded")
+    console.log("Model Ready")
+}
+function draw(){
+    image(video,0,0,700,500);
+    image(img,noseX-130,noseY-350,250,250)
     
 }
-function goteResults(Results){
-if (Results.length>0)
-    console.log(Results[0].pose.nose.x);
-}
-
-function draw() {
-    image(video,40,40,500,450);
-
+function gotReslults(results){
+if (results.length>0){
     
-    stroke(50, 168, 82);
-    fill(50, 168, 82);
+    noseX=results[0].pose.nose.x;
+    noseY=results[0].pose.nose.y;
+    console.log("X_Cords = "+noseX+"    Y_cords = "+noseY)
 
-
-    rect(63, 27, 500, 25);
-    rect(63, 490, 500, 25);
-    rect(27, 63, 25, 415);
-    rect(540, 63, 25, 415);
-
-    stroke(168, 10, 10);
-    fill(168, 10, 10);
-
-    circle(40,40,50);
-    circle(550,40,50);
-    circle(40,500,50);
-    circle(550,500,50);
-  
+}
 }
 
 function take_snapshot(){
